@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// Declare the function 
+
 bool authenticateUser();
 
 int main() {
