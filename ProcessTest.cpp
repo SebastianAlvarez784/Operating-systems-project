@@ -23,12 +23,12 @@ void testProcessSimulation() {
 
     for (int i = 0; i < 2; ++i) processes[0].executeOneUnit();  // Simulate running for 2 units of time
 
-    processes[0].updateState(ProcessState::WAITING);  // Move p1 to WAITING state (because it has IO operations)
+    processes[0].updateState(ProcessState::WAITING);  
     processes[1].updateState(ProcessState::RUNNING);
 
     for (int i = 0; i < 3; ++i) processes[1].executeOneUnit();  // Simulate running for 3 units of time
 
-    processes[1].updateState(ProcessState::TERMINATED);  // Terminate p2
+    processes[1].updateState(ProcessState::TERMINATED);  
 
     cout << "\nFinal Process States:\n";
     for (const auto& p : processes) {
