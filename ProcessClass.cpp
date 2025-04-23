@@ -1,6 +1,6 @@
-#include "process.h"  // Include the header file to link the class declaration with the definition
+#include "process.h"  
 
-// Constructor definition
+// Constructor 
 Process::Process(int pid, int arrival, int burst, int prio, int mem, bool io_ops)
     : pid(pid), arrival_time(arrival), burst_time(burst), priority(prio), state(ProcessState::NEW),
       remaining_time(burst), waiting_time(0), turnaround_time(0), memory_required(mem), has_io_operations(io_ops) {}
@@ -33,7 +33,7 @@ bool Process::hasIO() const { return has_io_operations; }
 void Process::setWaitingTime(int wt) { waiting_time = wt; }
 void Process::setTurnaroundTime(int tat) { turnaround_time = tat; }
 
-// Print process info
+// Print process 
 void Process::printInfo() const {
     std::cout << "PID: " << pid
               << ", Arrival: " << arrival_time
