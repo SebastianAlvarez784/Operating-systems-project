@@ -4,7 +4,7 @@
 
 using namespace std;
 
-// Definition of authenticateUser function
+
 bool authenticateUser() {
     string username, password;
     const string correctUsername = "Sebastian";  // Replace with your desired username
@@ -16,7 +16,6 @@ bool authenticateUser() {
     cout << "Enter password: ";
     cin >> password;
 
-    // Check if the entered username and password match the correct ones
     if (username == correctUsername && password == correctPassword) {
         return true;
     } else {
