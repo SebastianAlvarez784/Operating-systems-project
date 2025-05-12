@@ -1,8 +1,24 @@
-// auth.h
-#ifndef AUTH_H
-#define AUTH_H
+#include <iostream>
+#include <string>
+#include "auth.h"
 
-// Declaration of authenticateUser function
-bool authenticateUser();
+using namespace std;
 
-#endif
+
+bool authenticateUser() {
+    string username, password;
+    const string correctUsername = "Sebastian";  
+    const string correctPassword = "Sebastian18*";  
+
+    cout << "Enter username: ";
+    cin >> username;
+
+    cout << "Enter password: ";
+    cin >> password;
+
+    if (username == correctUsername && password == correctPassword) {
+        return true;
+    } else {
+        return false;
+    }
+}
