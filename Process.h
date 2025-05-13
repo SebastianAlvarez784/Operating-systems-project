@@ -1,47 +1,31 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
-#include <string>
+#include <iostream>
+#include <map>
+#include <vector>
+
+using namespace std;
 
 class Process {
 private:
-    // Process attributes
-    int pid;
-    int arrival_time;
-    int burst_time;
-    int remaining_time;
-    int waiting_time;
-    int turnaround_time;
-    int memory_required;
-    int priority;
-    std::string state;
-    bool has_io_operations;
+    int pid, burst;
+    string status;
+    map<int, int> pageTable;
 
 public:
-    // Constructor
-    Process(int id, int arrival, int burst, int priority, int memory, bool io_flag);
+    Process(int processID, int burstTime, string processStatus = "New");
 
-    // Methods to manipulate process state and execution
-    void setState(std::string new_state);
-    void decrementExecutionTime();
-    void updateTurnaroundTime(int current_time);
-    void updateWaitingTime(int queue_time);
-
-    // Getters
+    void setStatus(string processStatus);
     int getPID() const;
-    int getArrivalTime() const;
-    int getBurstTime() const;
-    int getPriority() const;
-    int getRemainingTime() const;
-    int getWaitingTime() const;
-    int getTurnaroundTime() const;
-    int getMemoryRequired() const;
-    bool hasIOOperations() const;
-    std::string getState() const;
+    int getBurst() const;
+    string getStatus() const;
 
-    // Setters
-    void setPriority(int new_priority);
-    void setMemoryRequired(int new_memory);
+    void addPageMapping(int virtualPage, int physicalFrame);
+    int translateAddress(int virtualAddress, int pageSize);
 };
 
-#endif // PROCESS_H
+// Function declaration 
+void mapVirtualToPhysical(vector<Process>& processes, int pagesToMap, int& nextFreeFrame, int pageSize);
+
+#endif
