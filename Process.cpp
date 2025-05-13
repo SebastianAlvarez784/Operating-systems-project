@@ -1,53 +1,47 @@
 #include "Process.h"
-#include <iostream>
 
-// Constructor: Initialize process attributes
-Process::Process(int id, int arrival, int burst, int priority, int memory, bool io_flag)
-    : pid(id),
-      arrival_time(arrival), 
-      burst_time(burst),
-      remaining_time(burst),
-      waiting_time(0),
-      turnaround_time(0),
-      memory_required(memory),
-      priority(priority),
-      state("NEW"),
-      has_io_operations(io_flag) {}
-
-// Method to update process state
-void Process::setState(std::string new_state) {
-    state = new_state;
+Process::Process(int processID, int burstTime, string processStatus) {
+    pid = processID;
+    burst = burstTime;
+    status = processStatus;
 }
 
-// Method to decrement remaining execution time
-void Process::decrementExecutionTime() {
-    if (remaining_time > 0) {
-        remaining_time--;
+void Process::setStatus(string processStatus) { status = processStatus; }
+int Process::getPID() const { return pid; }
+int Process::getBurst() const { return burst; }
+string Process::getStatus() const { return status; }
+
+void Process::addPageMapping(int virtualPage, int physicalFrame) {
+    pageTable[virtualPage] = physicalFrame;
+}
+//translate virtual adress to physical
+int Process::translateAddress(int virtualAddress, int pageSize) {
+    int pageNumber = virtualAddress / pageSize;
+    int offset = virtualAddress % pageSize;
+
+    if (pageTable.find(pageNumber) == pageTable.end()) {
+        cerr << "Invalid page access: Page " << pageNumber << " not mapped.\n";
+        return -1;
+    }
+
+    int physicalFrame = pageTable[pageNumber];
+    return (physicalFrame * pageSize) + offset;
+}
+
+// Function definition map virtual pages to physical
+void mapVirtualToPhysical(vector<Process>& processes, int pagesToMap, int& nextFreeFrame, int pageSize) {
+    for (auto& process : processes) {
+        for (int i = 0; i < pagesToMap; i++) {
+            process.addPageMapping(i, nextFreeFrame++);
+        }
+//testing
+        vector<int> testAddresses = { 0, pageSize + 1, 2 * pageSize + 500, 5 * pageSize };
+        for (int address : testAddresses) {
+            int physicalAddress = process.translateAddress(address, pageSize);
+            if (physicalAddress != -1) {
+                cout << "Process " << process.getPID() << " Virtual Address: " << address
+                    << " -> Physical Address: " << physicalAddress << "\n";
+            }
+        }
     }
 }
-
-// Method to update turnaround time
-void Process::updateTurnaroundTime(int current_time) {
-    turnaround_time = current_time - arrival_time;
-}
-
-// Method to update waiting time
-void Process::updateWaitingTime(int queue_time) {
-    waiting_time += queue_time;
-}
-
-// Getters
-int Process::getPID() const { return pid; }
-int Process::getArrivalTime() const { return arrival_time; }
-int Process::getBurstTime() const { return burst_time; }
-int Process::getPriority() const { return priority; }
-int Process::getRemainingTime() const { return remaining_time; }
-int Process::getWaitingTime() const { return waiting_time; }
-int Process::getTurnaroundTime() const { return turnaround_time; }
-int Process::getMemoryRequired() const { return memory_required; }
-bool Process::hasIOOperations() const { return has_io_operations; }
-std::string Process::getState() const { return state; }
-
-// Setters
-void Process::setPriority(int new_priority) { priority = new_priority; }
-void Process::setMemoryRequired(int new_memory) { memory_required = new_memory; }
